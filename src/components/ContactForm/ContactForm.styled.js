@@ -39,6 +39,7 @@ export const InfoInput = styled(Field)`
     border-radius: 4px;
     cursor: pointer;
     outline: none;
+    width: 400px;
     &:focus {
     border-color: #ff6b08;
     transition-property: border-color;
@@ -47,13 +48,13 @@ export const InfoInput = styled(Field)`
 `;
 
 export const Wrapper = styled.div`
-  max-width: 500px;
   position: relative;
+  max-width: 500px;
 `;
 
 export const InfoForm = styled(Form)`
   display: grid;
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
 `;
 
