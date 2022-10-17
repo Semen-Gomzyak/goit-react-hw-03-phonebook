@@ -1,16 +1,108 @@
-export const App = () => {
-  return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
-  );
-};
+import { Component } from 'react';
+import shortid from 'shortid';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ContactForm } from './ContactForm/ContactForm';
+import { Filter } from './Filter/Filter';
+import { ContactList } from './ContactList/ContactList';
+import { TitleBig, PrimaryTitles } from './Title/Title';
+
+export class App extends Component {
+  state = {
+    contacts: [],
+    filter: '',
+  };
+
+  componentDidMount() {
+    if (this.state.contacts.length === 0) {
+      toast.warning(`You don't have contacts, please add a new contact`);
+    }
+
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const nextСontacts = this.state.contacts;
+    const prevСontacts = prevState.contacts;
+
+    if (nextСontacts !== prevСontacts) {
+      localStorage.setItem('contacts', JSON.stringify(nextСontacts));
+    }
+  }
+
+  formSubmitHandler = data => {
+    const { name, number } = data;
+    const { contacts } = this.state;
+
+    const contact = {
+      id: shortid.generate(),
+      name,
+      number,
+    };
+
+    if (
+      contacts.find(
+        contact => contact.name.toLowerCase() === name.toLowerCase(),
+        toast.success(`Contact add!`)
+      )
+    ) {
+      toast.error(`${name} is already in contacts.`);
+      return;
+    }
+
+    this.setState(({ contacts }) => ({
+      contacts: [contact, ...contacts],
+    }));
+  };
+
+  changeFilter = event => {
+    this.setState({ filter: event.currentTarget.value });
+  };
+
+  getFilteredContacts = () => {
+    const { contacts, filter } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
+  };
+
+  deleteContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
+    toast.success(`Contact removed!`);
+  };
+
+  render() {
+    const { filter } = this.state;
+    const filteredContacts = this.getFilteredContacts();
+
+    return (
+      <div
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          display: 'display',
+        }}
+      >
+        <TitleBig>Phonebook</TitleBig>
+        <ContactForm onSubmit={this.formSubmitHandler} />
+
+        <PrimaryTitles>Contacts</PrimaryTitles>
+        <Filter value={filter} onChange={this.changeFilter} />
+        <ContactList
+          contacts={filteredContacts}
+          onDeleteContact={this.deleteContact}
+        />
+        <ToastContainer autoClose={4000} />
+      </div>
+    );
+  }
+}
