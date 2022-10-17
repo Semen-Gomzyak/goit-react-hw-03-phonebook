@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { IconButton } from './IconButton.styled';
 
-export const IconButton = ({ children, onClick, ...allyProps }) => (
+ IconButton = ({ children, onClick, ...allyProps }) => (
   <button type="button" onClick={onClick} {...allyProps}>
     {children}
   </button>

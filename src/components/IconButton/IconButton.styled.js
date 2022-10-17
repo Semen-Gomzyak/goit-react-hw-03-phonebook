@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const IconButton = styled.button`
+export let IconButton = styled.button`
   margin: 0 0 0 10px;
   padding: 10px;
   border: none;
