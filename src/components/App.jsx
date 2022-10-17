@@ -14,12 +14,12 @@ export class App extends Component {
   };
 
   componentDidMount() {
-    if (this.state.contacts.length === 0) {
-      toast.warning(`You don't have contacts, please add a new contact`);
-    }
-
     const contacts = localStorage.getItem('contacts');
     const parsedContacts = JSON.parse(contacts);
+
+    if (parsedContacts.length === 0) {
+      toast.warning(`You don't have contacts, please add a new contact`);
+    }
 
     if (parsedContacts) {
       this.setState({ contacts: parsedContacts });
