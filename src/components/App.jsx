@@ -17,9 +17,14 @@ export class App extends Component {
     const contacts = localStorage.getItem('contacts');
     const parsedContacts = JSON.parse(contacts);
 
-    if (parsedContacts.length === 0) {
-      toast.warning(`You don't have contacts, please add a new contact`);
+    if (parsedContacts === null) {
+      this.setState({ contacts: [] });
+      console.log("here");
     }
+
+      if (parsedContacts && parsedContacts.length === 0) {
+        toast.warning(`You don't have contacts, please add a new contact`);
+      }
 
     if (parsedContacts) {
       this.setState({ contacts: parsedContacts });
