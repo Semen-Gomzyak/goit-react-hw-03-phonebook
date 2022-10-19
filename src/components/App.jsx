@@ -53,7 +53,6 @@ export class App extends Component {
     if (
       contacts.find(
         contact => contact.name.toLowerCase() === name.toLowerCase(),
-        toast.success(`Contact add!`)
       )
     ) {
       toast.error(`${name} is already in contacts.`);
@@ -82,7 +81,6 @@ export class App extends Component {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
-    toast.success(`Contact removed!`);
   };
 
   render() {
